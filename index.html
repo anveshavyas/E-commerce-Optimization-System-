@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Commerce Analytics Platform</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-content">
+            <div class="logo" onclick="showView('home')">🧠 E-Commerce Analytics AI</div>
+            <ul class="nav-links">
+                <li><a href="#" onclick="showView('home')">Home</a></li>
+                <li><a href="#" onclick="showView('home')">Platforms</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Home View -->
+    <div id="homeView" class="container">
+        <div class="hero">
+            <h1>Advanced E-Commerce Intelligence<br><span class="gradient-text">AI-Powered Analytics Platform</span></h1>
+            <p>Real-time product analysis with 5 ML algorithms, visual search with ResNet50, demand forecasting & dynamic pricing optimization</p>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">🤖</div>
+                <div class="stat-number">5</div>
+                <div class="stat-label">ML Algorithms</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">📊</div>
+                <div class="stat-number">13+</div>
+                <div class="stat-label">Features Engineered</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🖼️</div>
+                <div class="stat-number" style="font-size: 1.5rem;">Visual Search</div>
+                <div class="stat-label">ResNet50 Powered</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">💰</div>
+                <div class="stat-number" style="font-size: 1.3rem; color: #6366f1;">Dynamic Pricing</div>
+                <div class="stat-label" style="color: #6366f1;">& Demand Forecasting</div>
+            </div>
+        </div>
+
+        <h2 style="text-align: center; font-size: 2.5rem; margin: 3rem 0;">Choose Your Platform</h2>
+        <div class="platform-grid">
+            <div class="platform-card" onclick="showView('advanced')">
+                <div class="platform-icon">📊</div>
+                <h3 style="font-size: 1.8rem; margin-bottom: 1rem;">Advanced Analytics</h3>
+                <p style="color: #94a3b8; margin-bottom: 1.5rem;">5 ensemble ML models with PCA, DBSCAN, demand forecasting & dynamic pricing</p>
+                <div style="text-align: left; display: inline-block;">
+                    <p style="color: #6366f1; margin: 0.5rem 0;">✓ Random Forest + Gradient Boosting</p>
+                    <p style="color: #6366f1; margin: 0.5rem 0;">✓ AdaBoost + SVR + Neural Network</p>
+                    <p style="color: #6366f1; margin: 0.5rem 0;">✓ PCA + DBSCAN + Hierarchical Clustering</p>
+                    <p style="color: #6366f1; margin: 0.5rem 0;">✓ Revenue Optimization Engine</p>
+                </div>
+            </div>
+
+            <div class="platform-card" onclick="showView('finder')">
+                <div class="platform-icon">🔍</div>
+                <h3 style="font-size: 1.8rem; margin-bottom: 1rem;">Product Finder</h3>
+                <p style="color: #94a3b8; margin-bottom: 1.5rem;">ResNet50 visual search with AI recommendations & value analysis</p>
+                <div style="text-align: left; display: inline-block;">
+                    <p style="color: #ec4899; margin: 0.5rem 0;">✓ Text Search</p>
+                    <p style="color: #ec4899; margin: 0.5rem 0;">✓ Visual Search (ResNet50)</p>
+                    <p style="color: #ec4899; margin: 0.5rem 0;">✓ Smart Recommendations</p>
+                    <p style="color: #ec4899; margin: 0.5rem 0;">✓ Value Score Analytics</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Advanced Analytics View -->
+    <div id="advancedView" class="container hidden">
+        <button class="btn btn-secondary" onclick="showView('home')" style="margin: 2rem 0;">← Back to Home</button>
+        
+        <h2 style="text-align: center; font-size: 2.5rem; margin: 2rem 0;">📊 Advanced Analytics Platform</h2>
+        
+        <div class="search-form">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>🔍 Product Search Query</label>
+                    <input type="text" id="advancedQuery" value="gaming laptop" placeholder="e.g., gaming laptop, wireless headphones">
+                </div>
+                <div class="form-group">
+                    <label>📦 Number of Products (5-20)</label>
+                    <input type="number" id="advancedMaxProducts" value="10" min="5" max="20">
+                </div>
+            </div>
+            <div id="advancedError" class="alert alert-error hidden">
+                <span id="advancedErrorText"></span>
+            </div>
+            <button class="btn btn-primary" onclick="searchAdvanced()" style="width: 100%; justify-content: center;">
+                🧠 Run Advanced AI Analysis
+            </button>
+        </div>
+
+        <div id="advancedLoading" class="loading hidden">
+            <div class="spinner"></div>
+            <h3 id="advancedLoadingText">Scraping Snapdeal...</h3>
+            <p style="color: #94a3b8; margin-top: 1rem;">Running 5 ML algorithms: RF, GB, AdaBoost, SVR, MLP...</p>
+        </div>
+
+        <div id="advancedResults" class="hidden">
+            <div class="alert alert-success">✓ Analysis Complete! All 5 ML models executed successfully.</div>
+            
+            <div id="advancedSummary" class="stats-grid"></div>
+
+            <div class="tabs">
+                <button class="tab active" onclick="switchAdvancedTab('overview')">📊 Overview</button>
+                <button class="tab" onclick="switchAdvancedTab('demand')">📈 Demand Forecast</button>
+                <button class="tab" onclick="switchAdvancedTab('pricing')">💰 Price Optimization</button>
+                <button class="tab" onclick="switchAdvancedTab('performance')">🎯 ML Performance</button>
+                <button class="tab" onclick="switchAdvancedTab('products')">📦 Products</button>
+            </div>
+
+            <div id="advancedOverview" class="tab-content active">
+                <div class="chart-container">
+                    <h3 class="chart-title">📊 Demand Score Distribution (Ensemble Model)</h3>
+                    <canvas id="advancedDemandChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h3 class="chart-title">💹 Demand vs Price Analysis</h3>
+                    <p style="color: #94a3b8; margin-bottom: 1rem;">
+                        <span style="color: #10b981;">●</span> High Demand &nbsp;
+                        <span style="color: #f59e0b;">●</span> Medium Demand &nbsp;
+                        <span style="color: #ef4444;">●</span> Low Demand
+                    </p>
+                    <canvas id="advancedScatterChart"></canvas>
+                </div>
+            </div>
+
+            <div id="advancedDemand" class="tab-content">
+                <div class="chart-container">
+                    <h3 class="chart-title">🎯 Demand Categories (DBSCAN + Hierarchical Clustering)</h3>
+                    <canvas id="advancedPieChart"></canvas>
+                </div>
+                <div id="advancedDemandInsights" class="chart-container">
+                    <h3 class="chart-title">💡 ML-Powered Demand Insights</h3>
+                    <div id="demandInsightsContent"></div>
+                </div>
+                <div id="advancedOpportunities"></div>
+            </div>
+
+            <div id="advancedPricing" class="tab-content">
+                <div class="chart-container">
+                    <h3 class="chart-title">⚖️ Current vs AI-Optimized Pricing</h3>
+                    <canvas id="advancedPricingChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h3 class="chart-title">📈 Revenue Optimization Score</h3>
+                    <canvas id="advancedRevenueChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h3 class="chart-title">📊 Pricing Strategy Distribution</h3>
+                    <canvas id="advancedStrategyPie"></canvas>
+                </div>
+                <div id="pricingStrategyDetails"></div>
+                <div class="chart-container">
+                    <h3 class="chart-title">📉 Price Elasticity Analysis</h3>
+                    <canvas id="advancedElasticityChart"></canvas>
+                </div>
+                <div id="advancedStrategies" class="stats-grid"></div>
+            </div>
+
+            <div id="advancedPerformance" class="tab-content">
+    <div class="chart-container">
+        <h3 class="chart-title">📊 Model Performance Comparison</h3>
+        <canvas id="performanceComparisonChart"></canvas>
+    </div>
+    
+    <div class="chart-container">
+        <h3 class="chart-title">📈 R² Score Comparison (Train vs Test)</h3>
+        <canvas id="r2ComparisonChart"></canvas>
+    </div>
+    
+    <div class="chart-container">
+        <h3 class="chart-title">📉 RMSE Comparison (Lower is Better)</h3>
+        <canvas id="rmseComparisonChart"></canvas>
+    </div>
+    
+    <div class="chart-container">
+        <h3 class="chart-title">📋Detailed Performance Metrics</h3>
+        <div id="performanceMetricsTable"></div>
+    </div>
+    
+    <div class="chart-container">
+        <h3 class="chart-title">🎯 Model Accuracy Comparison</h3>
+        <canvas id="accuracyComparisonChart"></canvas>
+    </div>
+
+    
+    <div id="performanceInsights" class="chart-container">
+        <h3 class="chart-title">💡 Performance Insights</h3>
+        <div id="performanceInsightsContent"></div>
+    </div>
+</div>
+
+            <div id="advancedProducts" class="tab-content">
+                <div style="display: flex; justify-content: space-between; margin: 2rem 0;">
+                    <div>
+                        <button class="btn btn-secondary" onclick="filterAdvanced('all')">All Products</button>
+                        <button class="btn btn-secondary" onclick="filterAdvanced('high')">High Demand</button>
+                    </div>
+                    <button class="btn btn-primary" onclick="exportAdvancedCSV()">📥 Export CSV</button>
+                </div>
+                <div id="advancedProductGrid" class="product-grid"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Product Finder View -->
+    <div id="finderView" class="container hidden">
+        <button class="btn btn-secondary" onclick="showView('home')" style="margin: 2rem 0;">← Back to Home</button>
+        
+        <h2 style="text-align: center; font-size: 2.5rem; margin: 2rem 0;">🔍 Product Finder</h2>
+        
+        <div class="search-form">
+            <div class="tabs" style="margin-bottom: 2rem;">
+                <button class="tab active" onclick="switchFinderMode('text')">⌨️ Text Search</button>
+                <button class="tab" onclick="switchFinderMode('visual')">🖼️ Visual Search (ResNet50)</button>
+            </div>
+
+            <div id="finderTextMode">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>🔍 Product Search Query</label>
+                        <input type="text" id="finderQuery" value="laptop" placeholder="e.g., laptop, headphones">
+                    </div>
+                    <div class="form-group">
+                        <label>📦 Number of Products (5-20)</label>
+                        <input type="number" id="finderMaxProducts" value="10" min="5" max="20">
+                    </div>
+                </div>
+            </div>
+
+            <div id="finderVisualMode" class="hidden">
+                <div class="form-group" style="margin-bottom: 1.5rem;">
+                    <label>🖼️ Upload Product Image</label>
+                    <div class="image-upload" id="imageUploadArea">
+                        <input type="file" id="imageInput" accept="image/*" style="display: none;" onchange="handleImageUpload(event)">
+                        <div id="uploadPlaceholder">
+                            <p style="font-size: 3rem; margin-bottom: 1rem;">☁️</p>
+                            <p style="color: #94a3b8;">Click to upload or drag & drop</p>
+                            <p style="color: #64748b; font-size: 0.9rem; margin-top: 0.5rem;">Supports: JPG, JPEG, PNG</p>
+                        </div>
+                        <div id="imagePreview" class="hidden">
+                            <img id="previewImage" style="max-height: 200px; border-radius: 12px; margin-bottom: 1rem;">
+                            <p id="detectedLabel" style="color: #10b981; font-weight: 600;"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>📦 Number of Products (5-20)</label>
+                    <input type="number" id="finderVisualMaxProducts" value="10" min="5" max="20">
+                </div>
+            </div>
+
+            <div id="finderError" class="alert alert-error hidden">
+                <span id="finderErrorText"></span>
+            </div>
+            <button class="btn btn-primary" id="finderSearchBtn" onclick="searchFinder()" style="width: 100%; justify-content: center; background: linear-gradient(135deg, #ec4899, #e11d48);">
+                🔍 Search Products
+            </button>
+        </div>
+
+        <div id="finderLoading" class="loading hidden">
+            <div class="spinner"></div>
+            <h3 id="finderLoadingText">Searching Snapdeal...</h3>
+        </div>
+
+        <div id="finderResults" class="hidden">
+            <div class="alert alert-success">✓ Search Complete!</div>
+            
+            <div id="finderRecommendation"></div>
+
+            <div class="tabs">
+                <button class="tab active" onclick="switchFinderTab('comparison')">📊 Comparison</button>
+                <button class="tab" onclick="switchFinderTab('products')">🛍️ All Products</button>
+                <button class="tab" onclick="switchFinderTab('analytics')">📈 Analytics</button>
+            </div>
+
+            <div id="finderComparison" class="tab-content active">
+                <div class="chart-container">
+                    <h3 class="chart-title">📊 Price Comparison</h3>
+                    <canvas id="finderPriceChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h3 class="chart-title">⭐ Rating Comparison</h3>
+                    <canvas id="finderRatingChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h3 class="chart-title">💎 Value Analysis: Price vs Rating</h3>
+                    <canvas id="finderScatterChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h3 class="chart-title">📈 Price Distribution</h3>
+                    <canvas id="finderPriceDistChart"></canvas>
+                </div>
+            </div>
+
+            <div id="finderProductsTab" class="tab-content">
+                <div style="text-align: right; margin: 2rem 0;">
+                    <button class="btn btn-primary" onclick="exportFinderCSV()" style="background: linear-gradient(135deg, #ec4899, #e11d48);">📥 Export CSV</button>
+                </div>
+                <div id="finderProductGrid" class="product-grid"></div>
+            </div>
+
+            <div id="finderAnalytics" class="tab-content">
+                <div id="finderStats" class="stats-grid"></div>
+                <div id="finderAnalyticsContent" class="chart-container">
+                    <h3 class="chart-title">📊 Detailed Analytics</h3>
+                    <div id="analyticsDetails"></div>
+                </div>
+                <div class="chart-container">
+                    <h3 class="chart-title">🏆 Top 3 Best Value Products</h3>
+                    <div id="topValueProducts"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
